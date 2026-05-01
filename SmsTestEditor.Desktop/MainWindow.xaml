@@ -15,33 +15,36 @@
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
     </Window.Resources>
     <Grid>
-        <!--a.kh: При сохранении значений блокирую DataGrid.-->
-        <DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleRounded}" ItemsSource="{Binding Variables}"
-                  CanUserAddRows="False"
-                  IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
-                  AutoGenerateColumns="False">
-            
-            <DataGrid.Resources>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsVariableValueChanged}" Value="True">
-                            <Setter Property="Background" Value="LightYellow"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Поле" 
-                                    Binding="{Binding Name}" 
-                                    IsReadOnly="True"
-                                    Width="*"/>
-                <DataGridTextColumn Header="Значение" 
-                                    Binding="{Binding Value}" 
-                                    Width="*"/>
-                <DataGridTextColumn Header="Комментарий" 
-                                    Binding="{Binding Comment}"
-                                    Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <DockPanel Margin="5">
+            <!--a.kh: При сохранении значений блокирую DataGrid.-->
+            <DataGrid Style="{DynamicResource DataGridStyleRounded}" 
+                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleRounded}" 
+                      ItemsSource="{Binding Variables}"
+                      CanUserAddRows="False" HeadersVisibility="Column"
+                      IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
+                      AutoGenerateColumns="False">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsVariableValueChanged}" Value="True">
+                                <Setter Property="Background" Value="LightYellow"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Поле" 
+                            Binding="{Binding Name}" 
+                            IsReadOnly="True"
+                            Width="*"/>
+                    <DataGridTextColumn Header="Значение" 
+                            Binding="{Binding Value}" 
+                            Width="*"/>
+                    <DataGridTextColumn Header="Комментарий" 
+                            Binding="{Binding Comment}"
+                            Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
     </Grid>
 </Window>
