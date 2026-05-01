@@ -12,4 +12,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = mainViewModel;
     }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+         => this.WindowState = WindowState.Minimized;
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => this.Close();
+    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        => this.DragMove();
 }

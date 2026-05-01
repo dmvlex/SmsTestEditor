@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmsTestEditor.Desktop"
         xmlns:converters="clr-namespace:SmsTestEditor.Desktop.Converters"
-        mc:Ignorable="d"
+        mc:Ignorable="d" 
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="450" Width="800">
     
     <Window.InputBindings>
@@ -15,36 +18,71 @@
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
     </Window.Resources>
     <Grid>
-        <DockPanel Margin="5">
-            <!--a.kh: При сохранении значений блокирую DataGrid.-->
-            <DataGrid Style="{DynamicResource DataGridStyleRounded}" 
-                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleRounded}" 
-                      ItemsSource="{Binding Variables}"
-                      CanUserAddRows="False" HeadersVisibility="Column"
-                      IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
-                      AutoGenerateColumns="False">
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsVariableValueChanged}" Value="True">
-                                <Setter Property="Background" Value="LightYellow"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Поле" 
-                            Binding="{Binding Name}" 
-                            IsReadOnly="True"
-                            Width="*"/>
-                    <DataGridTextColumn Header="Значение" 
-                            Binding="{Binding Value}" 
-                            Width="*"/>
-                    <DataGridTextColumn Header="Комментарий" 
-                            Binding="{Binding Comment}"
-                            Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
+        <Border CornerRadius="20" Background="White" BorderBrush="Transparent" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="TitleBar" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                      Grid.Row="0" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="15,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="Тестовое WPF-приложение для SmartMealService"/>
+                    <StackPanel Grid.Column="1" Margin="0,0,15,0"
+                                Background="Transparent"
+                                HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button x:Name="MinimizeButton"
+                                Background="Transparent" Margin="0"
+                                Width="15" 
+                                Content="&#xE921;" Click="MinimizeButton_Click"
+                                FontSize="10" FontFamily="Segoe MDL2 Assets"
+                                BorderBrush="Transparent"/>
+                        <Button x:Name="CloseButton"
+                                Width="15" Margin="0" Click="CloseButton_Click"
+                                Content="&#xE8BB;" FontSize="10" 
+                                FontFamily="Segoe MDL2 Assets"
+                                Background="Transparent" 
+                                BorderBrush="Transparent"/>
+                    </StackPanel>
+                    
+                </Grid>
+                <DockPanel Margin="5" Grid.Row="1">
+                    <!--a.kh: При сохранении значений блокирую DataGrid.-->
+                    <DataGrid Style="{DynamicResource DataGridStyleRounded}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleRounded}" 
+                              ItemsSource="{Binding Variables}"
+                              CanUserAddRows="False" HeadersVisibility="Column"
+                              IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVariableValueChanged}" Value="True">
+                                        <Setter Property="Background" Value="LightYellow"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Поле" 
+                                                Binding="{Binding Name}" 
+                                                IsReadOnly="True"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Значение" 
+                                                Binding="{Binding Value}" 
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Комментарий" 
+                                                Binding="{Binding Comment}"
+                                                Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
