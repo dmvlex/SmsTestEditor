@@ -4,12 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmsTestEditor.Desktop"
+        xmlns:converters="clr-namespace:SmsTestEditor.Desktop.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveAllValuesCommand}"/>
+    </Window.InputBindings>
+    <Window.Resources>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+    </Window.Resources>
     <Grid>
+        <!--a.kh: При сохранении значений блокирую DataGrid.-->
         <DataGrid ItemsSource="{Binding Variables}"
                   CanUserAddRows="False"
+                  IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
                   AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsVariableValueChanged}" Value="True">
+                            <Setter Property="Background" Value="LightYellow"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Поле" 
                                     Binding="{Binding Name}" 
@@ -19,6 +38,7 @@
                                     Binding="{Binding Value}" 
                                     Width="*"/>
                 <DataGridTextColumn Header="Комментарий" 
+                                    Binding="{Binding Comment}"
                                     Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
