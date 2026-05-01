@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 
 namespace SmsTestEditor.Desktop.Models
 {
@@ -22,7 +21,7 @@ namespace SmsTestEditor.Desktop.Models
             get => _isVariableValueChanged;
             set
             {
-                if(value != _isVariableValueChanged)
+                if (value != _isVariableValueChanged)
                 {
                     _isVariableValueChanged = value;
                     OnPropertyChanged();

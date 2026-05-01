@@ -1,11 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using SmsTestEditor.Desktop.Models;
+﻿using SmsTestEditor.Desktop.Models;
 using SmsTestEditor.Desktop.Services.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmsTestEditor.Desktop.Services
 {
@@ -31,7 +25,7 @@ namespace SmsTestEditor.Desktop.Services
             foreach (var name in variablesNames)
             {
                 var variableValue = Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.User)
-                    ?? string.Empty; 
+                    ?? string.Empty;
                 variables.Add(new(name, variableValue));
             }
 

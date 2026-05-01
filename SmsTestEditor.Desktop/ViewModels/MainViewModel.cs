@@ -7,10 +7,8 @@ using SmsTestEditor.Desktop.Services.Abstractions;
 using SmsTestEditor.Desktop.ViewModels.Abstractions;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Media;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Input;
 
 namespace SmsTestEditor.Desktop.ViewModels
 {
@@ -21,6 +19,8 @@ namespace SmsTestEditor.Desktop.ViewModels
         private readonly IConfiguration _configuration;
 
         private bool _isSaving = false;
+        private ObservableCollection<EnviromentVariableModel> _variables;
+
         public bool IsSaving
         {
             get => _isSaving;
@@ -33,8 +33,6 @@ namespace SmsTestEditor.Desktop.ViewModels
                 }
             }
         }
-
-        private ObservableCollection<EnviromentVariableModel> _variables;
         public ObservableCollection<EnviromentVariableModel> Variables
         {
             get => _variables;
@@ -58,15 +56,14 @@ namespace SmsTestEditor.Desktop.ViewModels
             _enviromentVariablesService = enviromentVariablesService;
             _configuration = configuration;
 
-            SaveAllValuesCommand = new AsyncRelayCommand(SaveAllValues,CanExecuteSaveAllValues);
+            SaveAllValuesCommand = new AsyncRelayCommand(SaveAllValues, CanExecuteSaveAllValues);
 
             LoadVariables();
         }
 
-        //a.kh: сохраняем только если меняли значение переменной
+        //a.kh: сохраняем только если меняли значение переменной или уже не идет процесс сохранения
         private bool CanExecuteSaveAllValues()
             => Variables.Any(v => v.IsVariableValueChanged) && !IsSaving;
-
         private async Task SaveAllValues()
         {
             var changedVariables = Variables.Where(v => v.IsVariableValueChanged).ToList();
@@ -91,11 +88,10 @@ namespace SmsTestEditor.Desktop.ViewModels
                 }
             });
 
-            ClearChanged(changedVariables);
+            ClearChangedVariablesView(changedVariables);
 
             IsSaving = false;
         }
-
         private void LoadVariables()
         {
             var variablesNames = _configuration.GetRequiredSection("AllowedEnviromentVariables")
@@ -104,7 +100,7 @@ namespace SmsTestEditor.Desktop.ViewModels
             Variables = _enviromentVariablesService.GetVariables(variablesNames)
                                                    .ToObservable();
         }
-        private void ClearChanged(IEnumerable<EnviromentVariableModel> variables)
+        private void ClearChangedVariablesView(IEnumerable<EnviromentVariableModel> variables)
         {
             foreach (var variable in variables)
             {
