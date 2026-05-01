@@ -16,10 +16,11 @@
     </Window.Resources>
     <Grid>
         <!--a.kh: При сохранении значений блокирую DataGrid.-->
-        <DataGrid ItemsSource="{Binding Variables}"
+        <DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleRounded}" ItemsSource="{Binding Variables}"
                   CanUserAddRows="False"
                   IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
                   AutoGenerateColumns="False">
+            
             <DataGrid.Resources>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
