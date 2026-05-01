@@ -7,5 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <DataGrid ItemsSource="{Binding Variables}"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Поле" 
+                                    Binding="{Binding Name}" 
+                                    IsReadOnly="True"
+                                    Width="*"/>
+                <DataGridTextColumn Header="Значение" 
+                                    Binding="{Binding Value}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Комментарий" 
+                                    Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

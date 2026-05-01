@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using SmsTestEditor.Desktop.Services;
+using SmsTestEditor.Desktop.Services.Abstractions;
 using SmsTestEditor.Desktop.ViewModels;
 using SmsTestEditor.Desktop.ViewModels.Abstractions;
 using System.Windows;
@@ -16,7 +19,14 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.ClearProviders();
+            loggingBuilder.AddSerilog();
+        });
+
         services.AddSingleton<IConfiguration>(_configuration);
+        services.AddSingleton<IEnviromentVariablesService, EnviromentVariablesService>();
 
         services.AddSingleton<IMainViewModel, MainViewModel>();
         services.AddSingleton<MainWindow>();
@@ -28,7 +38,7 @@ public partial class App : Application
 
         _configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: false)
             .Build();
 
         Log.Logger = new LoggerConfiguration()
@@ -41,6 +51,7 @@ public partial class App : Application
             ConfigureServices(serviceCollection);
 
             _serviceProvider = serviceCollection.BuildServiceProvider();
+
 
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
 
